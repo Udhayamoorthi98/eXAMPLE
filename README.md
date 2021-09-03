@@ -1,138 +1,36 @@
 # eXAMPLE
-* Copyright (C) 2012 by Matteo Franchin                                    *
- *                                                                          *
- * This file is part of Box.                                                *
- *                                                                          *
- *   Box is free software: you can redistribute it and/or modify it         *
- *   under the terms of the GNU Lesser General Public License as published  *
- *   by the Free Software Foundation, either version 3 of the License, or   *
- *   (at your option) any later version.                                    *
- *                                                                          *
- *   Box is distributed in the hope that it will be useful,                 *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *   GNU Lesser General Public License for more details.                    *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with Box.  If not, see <http://www.gnu.org/licenses/>.   *
- ****************************************************************************/
+# Github-Documentation-With-Doxygen
 
-/**
- * @file doxygen_c.h
- * @author My Self
- * @date 9 Sep 2012
- * @brief File containing example of doxygen usage for quick reference.
- *
- * Here typically goes a more extensive explanation of what the header
- * defines. Doxygens tags are words preceeded by either a backslash @\
- * or by an at symbol @@.
- * @see http://www.stack.nl/~dimitri/doxygen/docblocks.html
- * @see http://www.stack.nl/~dimitri/doxygen/commands.html
- */
+Automatically deploy your documentation of your project without any CI pipelines. This is achieved by using github actions along with github pages.
 
-#ifndef _BOX_PROTOTYPES_DOXYGEN_H
-#  define _BOX_PROTOTYPES_DOXYGEN_H
+Doxygen with auto deployment has been setup in this repository. The documentation for this repository is available at https://satu0king.github.io/Github-Documentation-With-Doxygen/
 
-#  include <systemheader1.h>
-#  include <systemheader2.h>
+## Doxygen - Documentation Setup
+Skip this if you already have doxygen configured 
+* Install `doxygen`
+    * macOS - `brew install doxygen`
+    * Ubuntu - `sudo apt-get install -y doxygen`
+* Create doxygen config file (Doxyfile). Run `doxygen -g`
+* Configure `Doxyfile`
+    * Set `RECURSIVE` to `YES`
+    * Set `EXCLUDE` and `EXCLUDE_PATTERNS` to exclude directories you don't want documented. Typically library code and plugins come here. 
+    * Set `PROJECT_NAME` to the name of your project
+* Optionally add `html` and `latex` to `.gitignore` file
+* Document your code according to Doxygen guidlines
+    * Check `src/main.c` for C style documentation. Output can be seen [here](https://satu0king.github.io/Github-Documentation-With-Doxygen/main_8c.html).
+    * Check `src/main.cpp` for C++ style documentation. Output can be seen [here](https://satu0king.github.io/Github-Documentation-With-Doxygen/main_8cpp.html)
+    * Check `src/main.py` for Python style documentation. Output can be seen [here](https://satu0king.github.io/Github-Documentation-With-Doxygen/namespacemain.html)
+* Optionally run `doxygen` to generate documentation to see output documentation locally
+    * By default web documentation and pdf documentation files are generated in `html` and `latex` directories respectively.
+    * View web documentation at `html/index.html`
+    * Compile pdf documentation by running `make` in `latex` directory
+    * Class list can be seen [here](https://satu0king.github.io/Github-Documentation-With-Doxygen/annotated.html)
 
-#  include <box/header1.h>
-#  include <box/header2.h>
+## Configuring automatic publishing using github actions
+* Copy the action file `main.yml` to `.github/workflows/main.yml`
+* Commit and Push to github
+* Github action should automatically start running
+* Confirm that github is set to deploy `gh-pages` branch in settings page
 
-#  include "local_header1.h"
-#  include "local_header2.h"
-
-/**
- * @brief Use brief, otherwise the index won't have a brief explanation.
- *
- * Detailed explanation.
- */
-typedef enum BoxEnum_enum {
-  BOXENUM_FIRST,  /**< Some documentation for first. */
-  BOXENUM_SECOND, /**< Some documentation for second. */
-  BOXENUM_ETC     /**< Etc. */
-} BoxEnum;
-
-/**
- * @brief Use brief, otherwise the index won't have a brief explanation.
- *
- * Detailed explanation.
- */
-typedef struct BoxStruct_struct {
-  int a;    /**< Some documentation for the member BoxStruct#a. */
-  int b;    /**< Some documentation for the member BoxStruct#b. */
-  double c; /**< Etc. */
-} BoxStruct;
-
-/**
- * @brief Example showing how to document a function with Doxygen.
- *
- * Description of what the function does. This part may refer to the parameters
- * of the function, like @p param1 or @p param2. A word of code can also be
- * inserted like @c this which is equivalent to <tt>this</tt> and can be useful
- * to say that the function returns a @c void or an @c int. If you want to have
- * more than one word in typewriter font, then just use @<tt@>.
- * We can also include text verbatim,
- * @verbatim like this@endverbatim
- * Sometimes it is also convenient to include an example of usage:
- * @code
- * BoxStruct *out = Box_The_Function_Name(param1, param2);
- * printf("something...\n");
- * @endcode
- * Or,
- * @code{.py}
- * pyval = python_func(arg1, arg2)
- * print pyval
- * @endcode
- * when the language is not the one used in the current source file (but
- * <b>be careful</b> as this may be supported only by recent versions
- * of Doxygen). By the way, <b>this is how you write bold text</b> or,
- * if it is just one word, then you can just do @b this.
- * @param param1 Description of the first parameter of the function.
- * @param param2 The second one, which follows @p param1.
- * @return Describe what the function returns.
- * @see Box_The_Second_Function
- * @see Box_The_Last_One
- * @see http://website/
- * @note Something to note.
- * @warning Warning.
- */
-BOXEXPORT BoxStruct *
-Box_The_Function_Name(BoxParamType1 param1, BoxParamType2 param2 /*, ...*/);
-
-/**
- * @brief A simple stub function to show how links do work.
- *
- * Links are generated automatically for webpages (like http://www.google.co.uk)
- * and for structures, like BoxStruct_struct. For typedef-ed types use
- * #BoxStruct.
- * For functions, automatic links are generated when the parenthesis () follow
- * the name of the function, like Box_The_Function_Name().
- * Alternatively, you can use #Box_The_Function_Name.
- * @return @c NULL is always returned.
- */
-BOXEXPORT void *
-Box_The_Second_Function(void);
-
-/**
- * Brief can be omitted. If you configure Doxygen with
- * <tt>JAVADOC_AUTOBRIEF=YES</tt>, then the first Line of the comment is used
- * instead. In this function this would be as if
- * @verbatim @brief Brief can be omitted. @endverbatim
- * was used instead.
- */
-BOXEXPORT void
-Box_The_Last_One(void);
-
-#endif /* _BOX_PROTOTYPES_DOXYGEN_H */
-
-Table Of Contents
-
-    Programming
-        Immagine: image browser and viewer
-        Pyrtist: draw with Python
-        Doxygen usage example (for C)
-    Tips and tricks
-    Publications
-    PhD Thesis
-
+## Notes
+* Ensure that `publish_dir` in `main.yml` is set correctly
